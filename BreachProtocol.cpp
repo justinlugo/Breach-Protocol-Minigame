@@ -2,6 +2,29 @@
 #include <ctime>
 #include <vector>
 
+class RowsAndCols
+{
+    private:
+        int currRow, currCol;
+    public:
+        int getCurrRow()
+        {
+            return currRow;
+        }
+        void setCurrRow(int currRow)
+        {
+            this->currRow = currRow;
+        }
+        int getCurrCol()
+        {
+            return currCol;
+        }
+        void setCurrCol(int currCol)
+        {
+            this->currCol = currCol;
+        }
+};
+
 void generateArray(std::string array[5][5], std::string possibleChoices[5]);
 void displayArray(std::string array[5][5]);
 void playGame(std::string array[5][5], std::string buffer[4], int bufferIDX, std::string solution[4]);
@@ -131,7 +154,8 @@ void displayBuffer(std::string buffer[4])
 
 void playGame(std::string array[5][5], std::string buffer[4], int bufferIDX, std::string solution[4])
 {
-    int bufferTries = 0, currRow = 0, currCol = 0;
+    int bufferTries = 0; //, currRow = 0, currCol = 0;
+    RowsAndCols rc1;
     while (bufferTries != 4)
     {
         if (bufferTries != 0)
@@ -139,10 +163,10 @@ void playGame(std::string array[5][5], std::string buffer[4], int bufferIDX, std
             switch(bufferTries % 2)
             {
                 case 0:
-                    std::cout << "Select an element from the current row (" << currRow + 1 << ").\n";
+                    std::cout << "Select an element from the current row (" << rc1.getCurrRow() + 1 << ").\n";
                     break;
                 case 1:
-                    std::cout << "Select a element from the current column (" << currCol + 1 << ").\n";
+                    std::cout << "Select a element from the current column (" << rc1.getCurrCol() + 1 << ").\n";
                     break;
             }
         }
@@ -157,54 +181,54 @@ void playGame(std::string array[5][5], std::string buffer[4], int bufferIDX, std
         
         if (bufferTries == 0)
         {
-            currRow = 0;
-            currCol = choice - 1;
+            rc1.setCurrRow(0);
+            rc1.setCurrCol(choice - 1);
         }
         else if (bufferTries % 2 == 1)
         {
-            currRow = choice - 1;
+            rc1.setCurrRow(choice - 1);
         }
         else if (bufferTries % 2 == 0)
         {
-            currCol = choice - 1;
+            rc1.setCurrCol(choice - 1);
         }
         
-        while (array[currRow][currCol] == " X")
+        while (array[rc1.getCurrRow()][rc1.getCurrCol()] == " X")
         {
             std::cout << "That location is currently occupied. Please enter another integer.\n";
             std::cin >> choice;
             if (bufferTries == 0)
             {
-                currRow = 0;
-                currCol = choice - 1;
+                rc1.setCurrRow(0);
+                rc1.setCurrCol(choice - 1);
             }
             else if (bufferTries % 2 == 1)
             {
-                currRow = choice - 1;
+                rc1.setCurrRow(choice - 1);
             }
             else if (bufferTries % 2 == 0)
             {
-                currCol = choice - 1;
+                rc1.setCurrCol(choice - 1);
             }
         }
         
         if (bufferTries == 0)
         {
-            currRow = 0;
-            currCol = choice - 1;
+            rc1.setCurrRow(0);
+            rc1.setCurrCol(choice - 1);
         }
         else if (bufferTries % 2 == 1)
         {
-            currRow = choice - 1;
+            rc1.setCurrRow(choice - 1);
         }
         else if (bufferTries % 2 == 0)
         {
-            currCol = choice - 1;
+            rc1.setCurrCol(choice - 1);
         }
-        buffer[bufferIDX] = array[currRow][currCol];
+        buffer[bufferIDX] = array[rc1.getCurrRow()][rc1.getCurrCol()];
         bufferTries++;
         bufferIDX++;
-        array[currRow][currCol] = " X";
+        array[rc1.getCurrRow()][rc1.getCurrCol()] = " X";
         displayArray(array);
         displaySolution(solution);
         displayBuffer(buffer);
@@ -213,7 +237,8 @@ void playGame(std::string array[5][5], std::string buffer[4], int bufferIDX, std
 
 void generateSolution(std::string array[5][5], std::string solution[4])
 {
-    int solutionTries = 0, choice = 0, currRow = 0, currCol = 0, solutionIDX = 0;
+    int solutionTries = 0, choice = 0, solutionIDX = 0;
+    RowsAndCols rc2;
     std::string findSolutionArray[5][5];
     
     for (int i = 0; i < 5; i++)
@@ -231,56 +256,56 @@ void generateSolution(std::string array[5][5], std::string solution[4])
         
         if (solutionTries == 0)
         {
-            currRow = 0;
-            currCol = choice - 1;
+            rc2.setCurrRow(0);
+            rc2.setCurrCol(choice - 1);
         }
         else if (solutionTries % 2 == 1)
         {
-            currRow = choice - 1;
+            rc2.setCurrRow(choice - 1);
         }
         else if (solutionTries % 2 == 0)
         {
-            currCol = choice - 1;
+            rc2.setCurrCol(choice - 1);
         }
         
         
-        while (findSolutionArray[currRow][currCol] == " X")
+        while (findSolutionArray[rc2.getCurrRow()][rc2.getCurrCol()] == " X")
         {
             //srand(time(0));
             choice = (rand() % 5) + 1;
             if (solutionTries == 0)
             {
-                currRow = 0;
-                currCol = choice - 1;
+                rc2.setCurrRow(0);
+                rc2.setCurrCol(choice - 1);
             }
             else if (solutionTries % 2 == 1)
             {
-                currRow = choice - 1;
+                rc2.setCurrRow(choice - 1);
             }
             else if (solutionTries % 2 == 0)
             {
-                currCol = choice - 1;
+                rc2.setCurrCol(choice - 1);
             }
         }
         
         if (solutionTries == 0)
         {
-            currRow = 0;
-            currCol = choice - 1;
+            rc2.setCurrRow(0);
+            rc2.setCurrCol(choice - 1);
         }
         else if (solutionTries % 2 == 1)
         {
-            currRow = choice - 1;
+            rc2.setCurrRow(choice - 1);
         }
         else if (solutionTries % 2 == 0)
         {
-            currCol = choice - 1;
+            rc2.setCurrCol(choice - 1);
         }
         
-        solution[solutionIDX] = findSolutionArray[currRow][currCol];
+        solution[solutionIDX] = findSolutionArray[rc2.getCurrRow()][rc2.getCurrCol()];
         solutionTries++;
         solutionIDX++;
-        findSolutionArray[currRow][currCol] = " X";
+        findSolutionArray[rc2.getCurrRow()][rc2.getCurrCol()] = " X";
     }
 }
 
