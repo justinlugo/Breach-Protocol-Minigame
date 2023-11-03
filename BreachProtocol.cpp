@@ -46,6 +46,7 @@ int main()
     int bufferSize = sizeof(buffer) / sizeof(buffer[0]);
     std::string solution[4];
 
+    // Instructions.
     std::cout << "*********************************************************************\n";   
     std::cout << "************************** Breach Protocol **************************\n";
     std::cout << "*********************************************************************\n";
@@ -137,6 +138,7 @@ void displayArray(std::string array[5][5])
 
 void displayBuffer(std::string buffer[4])
 {
+    // Displays the player's current buffer (attempt at solution).
     std::cout << "Current buffer: [";
     for (int i = 0; i < 4; i++)
     {
@@ -154,8 +156,10 @@ void displayBuffer(std::string buffer[4])
 
 void playGame(std::string array[5][5], std::string buffer[4], int bufferIDX, std::string solution[4])
 {
-    int bufferTries = 0; //, currRow = 0, currCol = 0;
+    int bufferTries = 0;
     RowsAndCols rc1;
+
+    // Amount of turns (equal to length of player buffer).
     while (bufferTries != 4)
     {
         if (bufferTries != 0)
@@ -178,40 +182,50 @@ void playGame(std::string array[5][5], std::string buffer[4], int bufferIDX, std
             std::cout << "Please enter a valid integer between 1 and 5.\n";
             std::cin >> choice;
         }
+
+        /*
+            If the amount of tries is 0, the player chooses an option from the top row, otherwise it cycles between even and odd amount of tries
+            to determine whether the row or column is what gets set between turns.
+        */ 
+        switch(bufferTries % 2)
+        {
+            case 0:
+                if (bufferTries)
+                {
+                    rc1.setCurrRow(0);
+                    rc1.setCurrCol(choice - 1);
+                }
+                else
+                {
+                    rc1.setCurrCol(choice - 1);
+                }
+            case 1:
+                rc1.setCurrRow(choice - 1);
+        }    
         
-        if (bufferTries == 0)
-        {
-            rc1.setCurrRow(0);
-            rc1.setCurrCol(choice - 1);
-        }
-        else if (bufferTries % 2 == 1)
-        {
-            rc1.setCurrRow(choice - 1);
-        }
-        else if (bufferTries % 2 == 0)
-        {
-            rc1.setCurrCol(choice - 1);
-        }
-        
+        // If the option the player chooses is occupied, stay in loop until they choose an option not occupied.
         while (array[rc1.getCurrRow()][rc1.getCurrCol()] == " X")
         {
             std::cout << "That location is currently occupied. Please enter another integer.\n";
             std::cin >> choice;
-            if (bufferTries == 0)
+            switch(bufferTries % 2)
             {
-                rc1.setCurrRow(0);
-                rc1.setCurrCol(choice - 1);
-            }
-            else if (bufferTries % 2 == 1)
-            {
-                rc1.setCurrRow(choice - 1);
-            }
-            else if (bufferTries % 2 == 0)
-            {
-                rc1.setCurrCol(choice - 1);
-            }
+                case 0:
+                    if (bufferTries)
+                    {
+                        rc1.setCurrRow(0);
+                        rc1.setCurrCol(choice - 1);
+                    }
+                    else
+                    {
+                        rc1.setCurrCol(choice - 1);
+                    }
+                case 1:
+                    rc1.setCurrRow(choice - 1);
+            }   
         }
-        
+
+        // Set current choice as occupied and add it to the player buffer.
         buffer[bufferIDX] = array[rc1.getCurrRow()][rc1.getCurrCol()];
         bufferTries++;
         bufferIDX++;
@@ -224,6 +238,10 @@ void playGame(std::string array[5][5], std::string buffer[4], int bufferIDX, std
 
 void generateSolution(std::string array[5][5], std::string solution[4])
 {
+    /*
+        Similar to playing the game, it is possible to create a solution to the array 
+        by having a computer randomly generate a path through the array.
+    */
     int solutionTries = 0, choice = 0, solutionIDX = 0;
     RowsAndCols rc2;
     std::string findSolutionArray[5][5];
@@ -259,7 +277,7 @@ void generateSolution(std::string array[5][5], std::string solution[4])
         
         while (findSolutionArray[rc2.getCurrRow()][rc2.getCurrCol()] == " X")
         {
-            //srand(time(0));
+            // srand(time(0));
             choice = (rand() % 5) + 1;
             switch(solutionTries % 2)
             {
@@ -287,6 +305,7 @@ void generateSolution(std::string array[5][5], std::string solution[4])
 
 void displaySolution(std::string solution[4])
 {
+    // Displays the solution array to the player.
     std::cout << "Solution: [";
     for (int i = 0; i < 4; i++)
     {
