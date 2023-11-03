@@ -212,19 +212,6 @@ void playGame(std::string array[5][5], std::string buffer[4], int bufferIDX, std
             }
         }
         
-        if (bufferTries == 0)
-        {
-            rc1.setCurrRow(0);
-            rc1.setCurrCol(choice - 1);
-        }
-        else if (bufferTries % 2 == 1)
-        {
-            rc1.setCurrRow(choice - 1);
-        }
-        else if (bufferTries % 2 == 0)
-        {
-            rc1.setCurrCol(choice - 1);
-        }
         buffer[bufferIDX] = array[rc1.getCurrRow()][rc1.getCurrCol()];
         bufferTries++;
         bufferIDX++;
@@ -253,53 +240,42 @@ void generateSolution(std::string array[5][5], std::string solution[4])
     {
         srand(time(0));
         choice = (rand() % 5) + 1;
-        
-        if (solutionTries == 0)
+
+        switch(solutionTries % 2)
         {
-            rc2.setCurrRow(0);
-            rc2.setCurrCol(choice - 1);
-        }
-        else if (solutionTries % 2 == 1)
-        {
-            rc2.setCurrRow(choice - 1);
-        }
-        else if (solutionTries % 2 == 0)
-        {
-            rc2.setCurrCol(choice - 1);
-        }
-        
+            case 0:
+                if (solutionTries)
+                {
+                    rc2.setCurrRow(0);
+                    rc2.setCurrCol(choice - 1);
+                }
+                else
+                {
+                    rc2.setCurrCol(choice - 1);
+                }
+            case 1:
+                rc2.setCurrRow(choice - 1);
+        }        
         
         while (findSolutionArray[rc2.getCurrRow()][rc2.getCurrCol()] == " X")
         {
             //srand(time(0));
             choice = (rand() % 5) + 1;
-            if (solutionTries == 0)
+            switch(solutionTries % 2)
             {
-                rc2.setCurrRow(0);
-                rc2.setCurrCol(choice - 1);
-            }
-            else if (solutionTries % 2 == 1)
-            {
-                rc2.setCurrRow(choice - 1);
-            }
-            else if (solutionTries % 2 == 0)
-            {
-                rc2.setCurrCol(choice - 1);
-            }
-        }
-        
-        if (solutionTries == 0)
-        {
-            rc2.setCurrRow(0);
-            rc2.setCurrCol(choice - 1);
-        }
-        else if (solutionTries % 2 == 1)
-        {
-            rc2.setCurrRow(choice - 1);
-        }
-        else if (solutionTries % 2 == 0)
-        {
-            rc2.setCurrCol(choice - 1);
+                case 0:
+                    if (solutionTries)
+                    {
+                        rc2.setCurrRow(0);
+                        rc2.setCurrCol(choice - 1);
+                    }
+                    else
+                    {
+                        rc2.setCurrCol(choice - 1);
+                    }
+                case 1:
+                    rc2.setCurrRow(choice - 1);
+            }    
         }
         
         solution[solutionIDX] = findSolutionArray[rc2.getCurrRow()][rc2.getCurrCol()];
