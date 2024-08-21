@@ -53,7 +53,7 @@ int main()
     std::cout << "**************************** How To Play ****************************\n";
     std::cout << "1. Choose an option from the top row to begin.\n";
     std::cout << "2. Your choices will now begin to switch between the current column and the current row.\n";
-    std::cout << "2.1. Your choices will be 1 - 5, with 1 being the top or left and 5 being the bottom or right of the current row/col\n.";
+    std::cout << "2.1. Your choices will be 1 - 5, with 1 being the top or left and 5 being the bottom or right of the current row/col.\n";
     std::cout << "3. Try to choose a path through the array such that the buffer (your choices) matches the generated solution.\n";
     std::cout << "*********************************************************************\n";
     std::cout << "Press 1 if you would like to play, or 0 to exit.\n";
@@ -190,17 +190,15 @@ void playGame(std::string array[5][5], std::string buffer[4], int bufferIDX, std
         switch(bufferTries % 2)
         {
             case 0:
-                if (bufferTries)
+                if (bufferTries == 0)
                 {
                     rc1.setCurrRow(0);
-                    rc1.setCurrCol(choice - 1);
                 }
-                else
-                {
-                    rc1.setCurrCol(choice - 1);
-                }
+                rc1.setCurrCol(choice - 1);
+                break;
             case 1:
                 rc1.setCurrRow(choice - 1);
+                break;
         }    
         
         // If the option the player chooses is occupied, stay in loop until they choose an option not occupied.
@@ -211,18 +209,12 @@ void playGame(std::string array[5][5], std::string buffer[4], int bufferIDX, std
             switch(bufferTries % 2)
             {
                 case 0:
-                    if (bufferTries)
-                    {
-                        rc1.setCurrRow(0);
-                        rc1.setCurrCol(choice - 1);
-                    }
-                    else
-                    {
-                        rc1.setCurrCol(choice - 1);
-                    }
+                    rc1.setCurrCol(choice - 1);
+                    break;
                 case 1:
                     rc1.setCurrRow(choice - 1);
-            }   
+                    break;
+            }  
         }
 
         // Set current choice as occupied and add it to the player buffer.
@@ -258,22 +250,20 @@ void generateSolution(std::string array[5][5], std::string solution[4])
     {
         srand(time(0));
         choice = (rand() % 5) + 1;
-
+        
         switch(solutionTries % 2)
         {
             case 0:
-                if (solutionTries)
+                if (solutionTries == 0)
                 {
                     rc2.setCurrRow(0);
-                    rc2.setCurrCol(choice - 1);
                 }
-                else
-                {
-                    rc2.setCurrCol(choice - 1);
-                }
+                rc2.setCurrCol(choice - 1);
+                break;
             case 1:
                 rc2.setCurrRow(choice - 1);
-        }        
+                break;
+        }
         
         while (findSolutionArray[rc2.getCurrRow()][rc2.getCurrCol()] == " X")
         {
@@ -282,18 +272,12 @@ void generateSolution(std::string array[5][5], std::string solution[4])
             switch(solutionTries % 2)
             {
                 case 0:
-                    if (solutionTries)
-                    {
-                        rc2.setCurrRow(0);
-                        rc2.setCurrCol(choice - 1);
-                    }
-                    else
-                    {
-                        rc2.setCurrCol(choice - 1);
-                    }
+                    rc2.setCurrCol(choice - 1);
+                    break;
                 case 1:
                     rc2.setCurrRow(choice - 1);
-            }    
+                    break;
+            }  
         }
         
         solution[solutionIDX] = findSolutionArray[rc2.getCurrRow()][rc2.getCurrCol()];
